@@ -1,0 +1,14 @@
+set security policies from-zone trust to-zone untrust policy trust-to-untrust then permit application-services idp
+set security idp idp-policy IDP-DEMO rulebase-ips rule 1 match source-address any
+set security idp idp-policy IDP-DEMO rulebase-ips rule 1 match to-zone untrust
+set security idp idp-policy IDP-DEMO rulebase-ips rule 1 match destination-address any
+set security idp idp-policy IDP-DEMO rulebase-ips rule 1 match application junos-http
+set security idp idp-policy IDP-DEMO rulebase-ips rule 1 match attacks custom-attacks IDP-DEMO
+set security idp idp-policy IDP-DEMO rulebase-ips rule 1 then action drop-connection
+set security idp idp-policy IDP-DEMO rulebase-ips rule 1 then notification log-attacks
+set security idp active-policy IDP-DEMO
+set security idp custom-attack IDP-DEMO recommended-action drop
+set security idp custom-attack IDP-DEMO severity major
+set security idp custom-attack IDP-DEMO attack-type signature context http-get-url
+set security idp custom-attack IDP-DEMO attack-type signature pattern .*bieber.*
+set security idp custom-attack IDP-DEMO attack-type signature direction client-to-server
